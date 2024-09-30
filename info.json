@@ -9,5 +9,5 @@
     "dependencies": [
         "base >= 1.2.25"
     ],
-    "description": "Allows control over lightning as seen on Fulgora."
+    "description": "Allows control over lightning on Fulgora."
 }
