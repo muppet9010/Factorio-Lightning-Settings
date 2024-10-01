@@ -19,8 +19,9 @@ Features
 Options
 ---------
 
-- Options to make the lightning more and less frequent. Also to set the energy and damage values per lightning strike. For example allows for changing the frequency of lightning strikes, but keeping the cumulative impact from them. Each can also be fully disabled independently.
 - Options to control when the lightning makes a sound. Can be always, never, or when a lightning strike occurs outside of a protected area and makes an explosion effect.
+- Options to make the lightning more and less frequent. Also to set the energy and damage values per lightning strike. For example allows for changing the frequency of lightning strikes, but keeping the cumulative impact from them. Each can also be fully disabled independently.
+
 
 
 Limitations
