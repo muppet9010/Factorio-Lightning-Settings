@@ -2,7 +2,7 @@
 
 
 
-Allows control over lightning on Fulgora.
+Allows control over lightning on Fulgora. Can change both the visual impact as well as the frequency and impact of lightning.
 
 
 

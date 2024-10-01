@@ -2,6 +2,8 @@ local Utility = require("utility")
 
 local disableFlash = settings.startup["lightning_settings-disable_flash"].value --[[@as boolean]] ---@type boolean
 local disableImpactLight = settings.startup["lightning_settings-disable_impact_light"].value --[[@as boolean]] ---@type boolean
+local disableLightningBoltGraphic = settings.startup["lightning_settings-disable_lightning_bolt_graphic"].value --[[@as boolean]] ---@type boolean
+local disableLightningBoltSound = settings.startup["lightning_settings-disable_lightning_bolt_sound"].value --[[@as boolean]] ---@type boolean
 local lightningFrequencyPercentage = settings.startup["lightning_settings-lightning_frequency_percentage"].value --[[@as integer]] ---@type integer
 local lightningDamagePercentage = settings.startup["lightning_settings-lightning_damage_percentage"].value --[[@as integer]] ---@type integer
 local lightningEnergyPercentage = settings.startup["lightning_settings-lightning_energy_percentage"].value --[[@as integer]] ---@type integer
@@ -18,6 +20,17 @@ if disableImpactLight then
     if lightningPrototype.graphics_set ~= nil then
         lightningPrototype.graphics_set.light = nil
     end
+end
+
+if disableLightningBoltGraphic then
+    if lightningPrototype.graphics_set ~= nil then
+        lightningPrototype.graphics_set.shader_configuration = nil
+        lightningPrototype.graphics_set.cloud_background = nill
+    end
+end
+
+if disableLightningBoltSound then
+    lightningPrototype.sound = nil
 end
 
 if lightningFrequencyPercentage == 0 then

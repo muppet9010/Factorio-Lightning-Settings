@@ -15,6 +15,20 @@ data:extend(
             order = "1001"
         },
         {
+            name = "lightning_settings-disable_lightning_bolt_graphic",
+            type = "bool-setting",
+            default_value = false,
+            setting_type = "startup",
+            order = "1002"
+        },
+        {
+            name = "lightning_settings-disable_lightning_bolt_sound",
+            type = "bool-setting",
+            default_value = false,
+            setting_type = "startup",
+            order = "1003"
+        },
+        {
             name = "lightning_settings-lightning_frequency_percentage",
             type = "int-setting",
             default_value = 100,
