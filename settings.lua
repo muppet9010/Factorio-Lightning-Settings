@@ -22,9 +22,10 @@ data:extend(
             order = "1002"
         },
         {
-            name = "lightning_settings-disable_lightning_bolt_sound",
-            type = "bool-setting",
-            default_value = false,
+            name = "lightning_settings-lightning_bolt_sound",
+            type = "string-setting",
+            default_value = "all",
+            allowed_values = { "all", "unprotected", "none" },
             setting_type = "startup",
             order = "1003"
         },
