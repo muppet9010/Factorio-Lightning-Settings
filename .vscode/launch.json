@@ -7,7 +7,7 @@
         {
             "type": "factoriomod",
             "request": "launch",
-            "name": "Factorio Mod Debug",
+            "name": "Factorio BetaTester Debug",
             "factorioArgs": [
                 "--window-size=1600x900"
             ],
