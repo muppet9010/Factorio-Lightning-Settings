@@ -28,7 +28,7 @@ end
 if disableLightningBoltGraphic then
     if lightningPrototype.graphics_set ~= nil then
         lightningPrototype.graphics_set.shader_configuration = nil
-        lightningPrototype.graphics_set.cloud_background = nill
+        lightningPrototype.graphics_set.cloud_background = nil
     end
 end
 
@@ -36,7 +36,7 @@ if lightningBoltSoundSetting ~= LightningBoltSoundSettingType.all then
     local lightningSound = lightningPrototype.sound
     lightningPrototype.sound = nil
 
-    if lightningBoltSoundSetting == LightningBoltSoundSettingType.unprotected then
+    if lightningBoltSoundSetting == LightningBoltSoundSettingType.unprotected and lightningSound ~= nil then
         -- Prepare the strike_effect property for our addition if needed.
         if lightningPrototype.strike_effect == nil then
             -- nothing currently so make an array for us to add too.
