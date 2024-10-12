@@ -5,6 +5,7 @@ Date: 2024-10-XX
   Changes:
   Bugfixes:
   Info:
+    - Changed to require Factorio 2.0 rather than 1.2 as public release nears.
 ---------------------------------------------------------------------------------------------------
 Version: 0.0.1
 Date: 2024-09-30

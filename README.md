@@ -28,3 +28,9 @@ Limitations
 ---------
 
 - This mod only affects the vanilla lightning on Fulgora. Any modded lightning or planets will be unaffected.
+
+
+Notes
+---------
+
+- In Factorio Editor if you create a surface with the settings of Fulgora it won't have lightning on it. So to test the mod you need a save game with the actual Fulgora planet having been reached.
