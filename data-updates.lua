@@ -11,8 +11,26 @@ local lightningFrequencyPercentage = settings.startup["lightning_settings-lightn
 local lightningDamagePercentage = settings.startup["lightning_settings-lightning_damage_percentage"].value --[[@as integer]] ---@type integer
 local lightningEnergyPercentage = settings.startup["lightning_settings-lightning_energy_percentage"].value --[[@as integer]] ---@type integer
 
-local lightningPrototype = data.raw["lightning"]["lightning"]
-local planetPrototype = data.raw["planet"]["fulgora"]
+local lightningPrototype ---@type data.LightningPrototype
+if data.raw["entity"] ~= nil then
+    -- 2.0.3 and above
+    lightningPrototype = data.raw["entity"]["lightning"] --[[@as data.LightningPrototype]]
+end
+if data.raw["lightning"] ~= nil then
+    -- 2.0.2 and below
+    lightningPrototype = data.raw["lightning"]["lightning"] --[[@as data.LightningPrototype]]
+end
+
+local planetPrototype ---@type data.PlanetPrototype
+if data.raw["space-location"] ~= nil then
+    -- 2.0.3 and above
+    planetPrototype = data.raw["space-location"]["fulgora"] --[[@as data.PlanetPrototype]]
+end
+if data.raw["planet"] ~= nil then
+    -- 2.0.2 and below
+    planetPrototype = data.raw["planet"]["fulgora"] --[[@as data.PlanetPrototype]]
+end
+
 if lightningPrototype == nil or planetPrototype == nil then return end
 
 if disableFlash then
