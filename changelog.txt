@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.0.4
+Date: 2024-XX-XX
+  Features:
+  Changes:
+  Bugfixes:
+  Info:
+    - Remove changes introduced in previous version as Factorio's data structure changes didn't occur in the end.
+---------------------------------------------------------------------------------------------------
 Version: 0.0.3
 Date: 2024-10-14
   Features:
