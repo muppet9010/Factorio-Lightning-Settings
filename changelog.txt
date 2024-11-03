@@ -2,8 +2,9 @@
 Version: 0.0.4
 Date: 2024-11-03
   Features:
-  Changes:
     - Add settings to control lightning impact effects. For when hits both lightening rods and the ground/unprotected entities.
+    - Add setting to make lightning rod capacity scale with lightning strike energy. Defaults to enabled so that increased lightning energy isn't lost by high conversion lightning rods. Done as setting in case there's a reason when you wouldn't want this.
+  Changes:
   Bugfixes:
   Info:
     - Remove changes introduced in previous mod version as Factorio's data structure changes didn't occur in the end.

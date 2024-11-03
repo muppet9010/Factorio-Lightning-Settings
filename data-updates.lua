@@ -12,7 +12,7 @@ local lightningBoltSoundSetting = settings.startup["lightning_settings-lightning
 local lightningFrequencyPercentage = settings.startup["lightning_settings-lightning_frequency_percentage"].value --[[@as integer]]
 local lightningDamagePercentage = settings.startup["lightning_settings-lightning_damage_percentage"].value --[[@as integer]]
 local lightningEnergyPercentage = settings.startup["lightning_settings-lightning_energy_percentage"].value --[[@as integer]]
-local scaleLightningRodCapacityToEnergy = settings.startup["lightning_settings-scale_lightning_rod_capacity_to_energy"].value --[[@as boolean]]
+local scaleLightningRodEnergySourceToLightningSettings = settings.startup["lightning_settings-scale_lightning_rod_energy_source_to_lightning_settings"].value --[[@as boolean]]
 
 local lightningFrequencyMultiplier = lightningFrequencyPercentage > 0 and (lightningFrequencyPercentage / 100) or 0
 local lightningDamageMultiplier = lightningDamagePercentage > 0 and (lightningDamagePercentage / 100) or 0
@@ -118,7 +118,7 @@ elseif lightningEnergyMultiplier ~= 1 then
     lightningPrototype.energy = (quantity * lightningEnergyMultiplier) .. unit
 end
 
-if scaleLightningRodCapacityToEnergy then
+if scaleLightningRodEnergySourceToLightningSettings then
     if lightningEnergyMultiplier == 0 then
         for _, lightningRodPrototype in pairs(data.raw["lightning-attractor"]) do
             -- If there's no energy any more then the lightning rods should have no capacity given we are matching the lightning energy via mod setting.
@@ -127,8 +127,8 @@ if scaleLightningRodCapacityToEnergy then
     elseif lightningEnergyMultiplier ~= 1 then
         for _, lightningRodPrototype in pairs(data.raw["lightning-attractor"]) do
             local rodEnergySource = lightningRodPrototype.energy_source
+            -- Have to do the storage, output flow and drain, as if we have less but higher energy lightning strikes we want to balance the totals of original power generation. 4 strikes every 5 seconds vs 2 strikes every 5 seconds, needs the same combined values for each attribute.
             if rodEnergySource ~= nil then
-                -- Have to do the storage, output flow and drain, as if we have less but more energy full lightning strikes we want to balance the totals of original factory impact.
                 if rodEnergySource.buffer_capacity ~= nil then
                     local quantity, unit = Utility.GetValueAndUnitFromString(rodEnergySource.buffer_capacity)
                     rodEnergySource.buffer_capacity = (quantity * lightningEnergyMultiplier) .. unit
@@ -139,9 +139,10 @@ if scaleLightningRodCapacityToEnergy then
                     rodEnergySource.output_flow_limit = (quantity * lightningEnergyMultiplier) .. unit
                 end
 
+                -- Drain scales opposite to frequency. So half as frequent strikes need to drain twice as quickly as we assume the energy value per strike has been doubled.
                 if rodEnergySource.drain ~= nil then
                     local quantity, unit = Utility.GetValueAndUnitFromString(rodEnergySource.drain)
-                    rodEnergySource.drain = (quantity * lightningEnergyMultiplier) .. unit
+                    rodEnergySource.drain = (quantity * (1 / lightningFrequencyMultiplier)) .. unit
                 end
             end
         end

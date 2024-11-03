@@ -71,10 +71,10 @@ data:extend(
             order = "2002"
         },
         {
-            name = "lightning_settings-scale_lightning_rod_capacity_to_energy",
-            localised_description = { "mod-setting-description.lightning_settings-scale_lightning_rod_capacity_to_energy", { "mod-setting-name.lightning_settings-lightning_energy_percentage" } },
+            name = "lightning_settings-scale_lightning_rod_energy_source_to_lightning_settings",
+            localised_description = { "mod-setting-description.lightning_settings-scale_lightning_rod_energy_source_to_lightning_settings", { "mod-setting-name.lightning_settings-lightning_energy_percentage" }, { "mod-setting-name.lightning_settings-lightning_frequency_percentage" } },
             type = "bool-setting",
-            default_value = false,
+            default_value = true,
             setting_type = "startup",
             order = "2003"
         },
