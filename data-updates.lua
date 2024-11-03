@@ -6,6 +6,8 @@ local LightningBoltSoundSettingType = { all = "all", unprotected = "unprotected"
 local disableFlash = settings.startup["lightning_settings-disable_flash"].value --[[@as boolean]] ---@type boolean
 local disableImpactLight = settings.startup["lightning_settings-disable_impact_light"].value --[[@as boolean]] ---@type boolean
 local disableLightningBoltGraphic = settings.startup["lightning_settings-disable_lightning_bolt_graphic"].value --[[@as boolean]] ---@type boolean
+local disableLightningBoltGroundImpactGraphic = settings.startup["lightning_settings-disable_lightning_ground_impact_graphic"].value --[[@as boolean]] ---@type boolean
+local disableLightningBoltRodChargeGraphic = settings.startup["lightning_settings-disable_lightning_rod_charge_graphic"].value --[[@as boolean]] ---@type boolean
 local lightningBoltSoundSetting = settings.startup["lightning_settings-lightning_bolt_sound"].value --[[@as LightningBoltSoundSettingType]] ---@type LightningBoltSoundSettingType
 local lightningFrequencyPercentage = settings.startup["lightning_settings-lightning_frequency_percentage"].value --[[@as integer]] ---@type integer
 local lightningDamagePercentage = settings.startup["lightning_settings-lightning_damage_percentage"].value --[[@as integer]] ---@type integer
@@ -37,6 +39,21 @@ if disableLightningBoltGraphic then
     if lightningPrototype.graphics_set ~= nil then
         lightningPrototype.graphics_set.shader_configuration = nil
         lightningPrototype.graphics_set.cloud_background = nil
+    end
+end
+
+if disableLightningBoltGroundImpactGraphic then
+    lightningPrototype.strike_effect = nil
+    if lightningPrototype.graphics_set ~= nil then
+        lightningPrototype.graphics_set.explosion = nil
+        lightningPrototype.graphics_set.ground_streamers = nil
+    end
+end
+
+if disableLightningBoltRodChargeGraphic then
+    if lightningPrototype.graphics_set ~= nil then
+        lightningPrototype.graphics_set.attractor_hit_animation = nil
+        lightningPrototype.graphics_set.ground_streamers = nil
     end
 end
 

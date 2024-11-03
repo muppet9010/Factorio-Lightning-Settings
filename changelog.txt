@@ -1,11 +1,12 @@
 ---------------------------------------------------------------------------------------------------
 Version: 0.0.4
-Date: 2024-XX-XX
+Date: 2024-11-03
   Features:
   Changes:
+    - Add settings to control lightning impact effects. For when hits both lightening rods and the ground/unprotected entities.
   Bugfixes:
   Info:
-    - Remove changes introduced in previous version as Factorio's data structure changes didn't occur in the end.
+    - Remove changes introduced in previous mod version as Factorio's data structure changes didn't occur in the end.
 ---------------------------------------------------------------------------------------------------
 Version: 0.0.3
 Date: 2024-10-14
