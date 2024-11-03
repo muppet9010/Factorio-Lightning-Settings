@@ -69,6 +69,14 @@ data:extend(
             maximum_value = 1000,
             setting_type = "startup",
             order = "2002"
-        }
+        },
+        {
+            name = "lightning_settings-scale_lightning_rod_capacity_to_energy",
+            localised_description = { "mod-setting-description.lightning_settings-scale_lightning_rod_capacity_to_energy", { "mod-setting-name.lightning_settings-lightning_energy_percentage" } },
+            type = "bool-setting",
+            default_value = false,
+            setting_type = "startup",
+            order = "2003"
+        },
     }
 )

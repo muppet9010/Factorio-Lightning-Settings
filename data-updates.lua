@@ -3,15 +3,20 @@ local Utility = require("utility")
 ---@enum LightningBoltSoundSettingType
 local LightningBoltSoundSettingType = { all = "all", unprotected = "unprotected", none = "none" }
 
-local disableFlash = settings.startup["lightning_settings-disable_flash"].value --[[@as boolean]] ---@type boolean
-local disableImpactLight = settings.startup["lightning_settings-disable_impact_light"].value --[[@as boolean]] ---@type boolean
-local disableLightningBoltGraphic = settings.startup["lightning_settings-disable_lightning_bolt_graphic"].value --[[@as boolean]] ---@type boolean
-local disableLightningBoltGroundImpactGraphic = settings.startup["lightning_settings-disable_lightning_ground_impact_graphic"].value --[[@as boolean]] ---@type boolean
-local disableLightningBoltRodChargeGraphic = settings.startup["lightning_settings-disable_lightning_rod_charge_graphic"].value --[[@as boolean]] ---@type boolean
-local lightningBoltSoundSetting = settings.startup["lightning_settings-lightning_bolt_sound"].value --[[@as LightningBoltSoundSettingType]] ---@type LightningBoltSoundSettingType
-local lightningFrequencyPercentage = settings.startup["lightning_settings-lightning_frequency_percentage"].value --[[@as integer]] ---@type integer
-local lightningDamagePercentage = settings.startup["lightning_settings-lightning_damage_percentage"].value --[[@as integer]] ---@type integer
-local lightningEnergyPercentage = settings.startup["lightning_settings-lightning_energy_percentage"].value --[[@as integer]] ---@type integer
+local disableFlash = settings.startup["lightning_settings-disable_flash"].value --[[@as boolean]]
+local disableImpactLight = settings.startup["lightning_settings-disable_impact_light"].value --[[@as boolean]]
+local disableLightningBoltGraphic = settings.startup["lightning_settings-disable_lightning_bolt_graphic"].value --[[@as boolean]]
+local disableLightningBoltGroundImpactGraphic = settings.startup["lightning_settings-disable_lightning_ground_impact_graphic"].value --[[@as boolean]]
+local disableLightningBoltRodChargeGraphic = settings.startup["lightning_settings-disable_lightning_rod_charge_graphic"].value --[[@as boolean]]
+local lightningBoltSoundSetting = settings.startup["lightning_settings-lightning_bolt_sound"].value --[[@as LightningBoltSoundSettingType]]
+local lightningFrequencyPercentage = settings.startup["lightning_settings-lightning_frequency_percentage"].value --[[@as integer]]
+local lightningDamagePercentage = settings.startup["lightning_settings-lightning_damage_percentage"].value --[[@as integer]]
+local lightningEnergyPercentage = settings.startup["lightning_settings-lightning_energy_percentage"].value --[[@as integer]]
+local scaleLightningRodCapacityToEnergy = settings.startup["lightning_settings-scale_lightning_rod_capacity_to_energy"].value --[[@as boolean]]
+
+local lightningFrequencyMultiplier = lightningFrequencyPercentage > 0 and (lightningFrequencyPercentage / 100) or 0
+local lightningDamageMultiplier = lightningDamagePercentage > 0 and (lightningDamagePercentage / 100) or 0
+local lightningEnergyMultiplier = lightningEnergyPercentage > 0 and (lightningEnergyPercentage / 100) or 0
 
 local lightningPrototype ---@type data.LightningPrototype
 if data.raw["lightning"] ~= nil then
@@ -92,24 +97,53 @@ if lightningBoltSoundSetting ~= LightningBoltSoundSettingType.all then
     end
 end
 
-if lightningFrequencyPercentage == 0 then
+if lightningFrequencyMultiplier == 0 then
     planetPrototype.lightning_properties = nil
-elseif lightningFrequencyPercentage ~= 100 then
+elseif lightningFrequencyMultiplier ~= 1 then
     if planetPrototype.lightning_properties ~= nil then
-        planetPrototype.lightning_properties.lightnings_per_chunk_per_tick = planetPrototype.lightning_properties.lightnings_per_chunk_per_tick * (lightningFrequencyPercentage / 100)
+        planetPrototype.lightning_properties.lightnings_per_chunk_per_tick = planetPrototype.lightning_properties.lightnings_per_chunk_per_tick * lightningFrequencyMultiplier
     end
 end
 
-if lightningDamagePercentage == 0 then
+if lightningDamageMultiplier == 0 then
     lightningPrototype.damage = nil
-elseif lightningDamagePercentage ~= 100 then
-    lightningPrototype.damage = lightningPrototype.damage * (lightningDamagePercentage / 100)
+elseif lightningDamageMultiplier ~= 1 then
+    lightningPrototype.damage = lightningPrototype.damage * lightningDamageMultiplier
 end
 
-if lightningEnergyPercentage == 0 then
+if lightningEnergyMultiplier == 0 then
     lightningPrototype.energy = nil
-elseif lightningEnergyPercentage ~= 100 then
+elseif lightningEnergyMultiplier ~= 1 then
     local quantity, unit = Utility.GetValueAndUnitFromString(lightningPrototype.energy)
-    quantity = quantity * (lightningEnergyPercentage / 100) ---@type double
-    lightningPrototype.energy = quantity .. unit
+    lightningPrototype.energy = (quantity * lightningEnergyMultiplier) .. unit
+end
+
+if scaleLightningRodCapacityToEnergy then
+    if lightningEnergyMultiplier == 0 then
+        for _, lightningRodPrototype in pairs(data.raw["lightning-attractor"]) do
+            -- If there's no energy any more then the lightning rods should have no capacity given we are matching the lightning energy via mod setting.
+            lightningRodPrototype.energy_source = nil
+        end
+    elseif lightningEnergyMultiplier ~= 1 then
+        for _, lightningRodPrototype in pairs(data.raw["lightning-attractor"]) do
+            local rodEnergySource = lightningRodPrototype.energy_source
+            if rodEnergySource ~= nil then
+                -- Have to do the storage, output flow and drain, as if we have less but more energy full lightning strikes we want to balance the totals of original factory impact.
+                if rodEnergySource.buffer_capacity ~= nil then
+                    local quantity, unit = Utility.GetValueAndUnitFromString(rodEnergySource.buffer_capacity)
+                    rodEnergySource.buffer_capacity = (quantity * lightningEnergyMultiplier) .. unit
+                end
+
+                if rodEnergySource.output_flow_limit ~= nil then
+                    local quantity, unit = Utility.GetValueAndUnitFromString(rodEnergySource.output_flow_limit)
+                    rodEnergySource.output_flow_limit = (quantity * lightningEnergyMultiplier) .. unit
+                end
+
+                if rodEnergySource.drain ~= nil then
+                    local quantity, unit = Utility.GetValueAndUnitFromString(rodEnergySource.drain)
+                    rodEnergySource.drain = (quantity * lightningEnergyMultiplier) .. unit
+                end
+            end
+        end
+    end
 end
